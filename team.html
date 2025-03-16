@@ -24,10 +24,59 @@
             padding: 2rem;
         }
 
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .home-icon {
+            position: absolute;
+            left: 0;
+            font-size: 1.8rem;
+        }
+
+        .home-icon a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .home-icon a:hover {
+            color: #2980b9;
+        }
+
         h1 {
             text-align: center;
-            margin-bottom: 2rem;
             color: #2c3e50;
+            position: relative;
+            display: inline-block;
+            padding: 0 15px;
+        }
+
+        /* Highlighting the heading */
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+
+        h1:before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #3498db;
+            border-radius: 2px;
         }
 
         .team-filter {
@@ -76,19 +125,19 @@
         }
 
         .member-photo {
-    height: 300px;
-    width: 100%;
-    overflow: hidden; /* Hides the bottom part */
-    background-color: #f0f0f0;
-    position: relative;
-}
+            height: 300px;
+            width: 100%;
+            overflow: hidden; /* Hides the bottom part */
+            background-color: #f0f0f0;
+            position: relative;
+        }
 
-.member-photo img {
-    width: 100%; /* Keeps the aspect ratio */
-    position: absolute;
-    top: 0; /* Ensures top part is visible */
-    left: 0;
-}
+        .member-photo img {
+            width: 100%; /* Keeps the aspect ratio */
+            position: absolute;
+            top: 0; /* Ensures top part is visible */
+            left: 0;
+        }
         .member-info {
             padding: 1.5rem;
         }
@@ -162,12 +211,33 @@
             .team-filter select {
                 width: 100%;
             }
+
+            .header {
+                margin-top: 2rem;
+            }
+
+            .home-icon {
+                top: -2rem;
+                left: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Our Team</h1>
+        <div class="header">
+            <div class="home-icon">
+                <a href="index.html" title="Go to Home">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </a>
+            </div>
+            <h1>Our Team</h1>
+        </div>
+        
         <div class="team-filter">
             <input type="text" id="searchInput" placeholder="Search by name or designation...">
             <select id="domainFilter">
@@ -271,7 +341,14 @@
                 clone.querySelector('.member-designation').textContent = member.designation;
                 clone.querySelector('.exp-years').textContent = member.expYears;
                 clone.querySelector('.exp-domain').textContent = member.expDomain;
-                clone.querySelector('.member-achievement p').textContent = member.achievement;
+                
+                // Handle case where achievement might be missing
+                if (member.achievement) {
+                    clone.querySelector('.member-achievement p').textContent = member.achievement;
+                } else {
+                    const achievementSection = clone.querySelector('.member-achievement');
+                    achievementSection.style.display = 'none';
+                }
                 
                 teamContainer.appendChild(clone);
             });
