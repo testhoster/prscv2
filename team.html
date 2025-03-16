@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+
+        .team-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .team-filter input,
+        .team-filter select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .team-filter input {
+            flex: 3;
+        }
+
+        .team-filter select {
+            flex: 1;
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-member {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-photo {
+    height: 300px;
+    width: 100%;
+    overflow: hidden; /* Hides the bottom part */
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+.member-photo img {
+    width: 100%; /* Keeps the aspect ratio */
+    position: absolute;
+    top: 0; /* Ensures top part is visible */
+    left: 0;
+}
+        .member-info {
+            padding: 1.5rem;
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-designation {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            background-color: #3498db;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .member-experience {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .exp-years {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .exp-domain {
+            font-weight: bold;
+        }
+
+        .member-achievement h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .member-achievement p {
+            font-size: 1rem;
+            color: #e74c3c;
+            line-height: 1.5;
+            font-weight: 600;
+            padding: 5px 10px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #e74c3c;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            padding: 2rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .team-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-filter {
+                flex-direction: column;
+            }
+            
+            .team-filter input,
+            .team-filter select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our Team</h1>
+        <div class="team-filter">
+            <input type="text" id="searchInput" placeholder="Search by name or designation...">
+            <select id="domainFilter">
+                <option value="">Filter by Domain</option>
+                <!-- Domain options will be populated by JavaScript -->
+            </select>
+        </div>
+        
+        <div class="team-container" id="teamContainer">
+            <!-- Team members will be populated here via JavaScript -->
+        </div>
+    </div>
+    
+    <template id="teamMemberTemplate">
+        <div class="team-member">
+            <div class="member-photo">
+                <img src="/api/placeholder/150/150" alt="Team Member">
+            </div>
+            <div class="member-info">
+                <h2 class="member-name">Name</h2>
+                <h3 class="member-designation">Designation</h3>
+                <div class="member-experience">
+                    <span class="exp-years">0</span> years in <span class="exp-domain">Domain</span>
+                </div>
+                <div class="member-achievement">
+                    <h4>Highest Achievement:</h4>
+                    <p>Achievement details</p>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Team data with your provided information
+        let teamMembers = [
+            {
+                photo: "Pavan.jpg",
+                name: "A Pavan Kalyan",
+                designation: "Founder and Head Coach",
+                expYears: 9,
+                expDomain: "Coaching",
+                achievement: "National medalist: Speed-Inline"
+            },
+            {
+                photo: "Hanuman.jpg",
+                name: "B Hanuman Babji",
+                designation: "Mentor and Club Advisor",
+                expYears: 15,
+                expDomain: "Coaching",
+                achievement: "National medalist"
+            },
+            {
+                photo: "/api/placeholder/150/150",
+                name: "P Venkatesh Reddy",
+                designation: "Coaching Assistant",
+                expYears: 3,
+                expDomain: "Coaching",
+                achievement: "Speed Quad"
+            },
+            {
+                photo: "Rithvik.jpg",
+                name: "Koruturu Rithvik",
+                designation: "Head of Technology",
+                expYears: 3,
+                expDomain: "Computer Science and Technology",
+                achievement: "7 X Nationalist: Inline-Alpine"
+            },
+            {
+                photo: "Sevitha.jpg",
+                name: "K Sevitha",
+                designation: "Contributing Developer",
+                expYears: 4,
+                expDomain: "Computer Science and Technology",
+            },
+        ];
+
+        // DOM elements
+        const teamContainer = document.getElementById('teamContainer');
+        const searchInput = document.getElementById('searchInput');
+        const domainFilter = document.getElementById('domainFilter');
+        const teamMemberTemplate = document.getElementById('teamMemberTemplate');
+
+        // Function to render team members
+        function renderTeamMembers(members) {
+            teamContainer.innerHTML = '';
+            
+            if (members.length === 0) {
+                teamContainer.innerHTML = '<p class="no-results">No team members found matching your criteria.</p>';
+                return;
+            }
+            
+            members.forEach(member => {
+                const clone = document.importNode(teamMemberTemplate.content, true);
+                
+                // Set member data in the template
+                const img = clone.querySelector('.member-photo img');
+                img.src = member.photo || "/api/placeholder/150/150";
+                img.alt = member.name;
+                
+                clone.querySelector('.member-name').textContent = member.name;
+                clone.querySelector('.member-designation').textContent = member.designation;
+                clone.querySelector('.exp-years').textContent = member.expYears;
+                clone.querySelector('.exp-domain').textContent = member.expDomain;
+                clone.querySelector('.member-achievement p').textContent = member.achievement;
+                
+                teamContainer.appendChild(clone);
+            });
+        }
+
+        // Filter team members based on search and domain filter
+        function filterTeamMembers() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const domainValue = domainFilter.value;
+            
+            const filteredMembers = teamMembers.filter(member => {
+                const nameMatch = member.name.toLowerCase().includes(searchTerm);
+                const designationMatch = member.designation.toLowerCase().includes(searchTerm);
+                const domainMatch = !domainValue || member.expDomain === domainValue;
+                
+                return (nameMatch || designationMatch) && domainMatch;
+            });
+            
+            renderTeamMembers(filteredMembers);
+        }
+
+        // Update domain filter options
+        function updateDomainFilter(domains) {
+            // Keep the first option (Filter by Domain)
+            while (domainFilter.options.length > 1) {
+                domainFilter.remove(1);
+            }
+            
+            domains.forEach(domain => {
+                const option = document.createElement('option');
+                option.value = domain;
+                option.textContent = domain;
+                domainFilter.appendChild(option);
+            });
+        }
+
+        // Initialize the app
+        function initApp() {
+            // Initial render
+            renderTeamMembers(teamMembers);
+            
+            // Set up event listeners
+            searchInput.addEventListener('input', filterTeamMembers);
+            domainFilter.addEventListener('change', filterTeamMembers);
+            
+            // Initialize domain filter
+            const domains = [...new Set(teamMembers.map(member => member.expDomain))];
+            updateDomainFilter(domains);
+        }
+
+        // Initialize when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
